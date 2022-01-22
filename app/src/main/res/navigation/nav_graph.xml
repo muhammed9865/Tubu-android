@@ -25,10 +25,31 @@
             app:destination="@id/listFragment"
             app:enterAnim="@anim/slide_to_right"
             app:exitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="channel_id"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/listFragment"
         android:name="com.example.tubu.ui.list.ListFragment"
         android:label="fragment_list"
-        tools:layout="@layout/fragment_list" />
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/action_listFragment_to_videoPlayerFragment"
+            app:destination="@id/videoPlayerFragment" />
+        <argument
+            android:name="listId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/videoPlayerFragment"
+        android:name="com.example.tubu.ui.player.VideoPlayerFragment"
+        android:label="VideoPlayerFragment" >
+        <argument
+            android:name="videoUrl"
+            app:argType="string" />
+        <argument
+            android:name="videoName"
+            app:argType="string" />
+    </fragment>
 </navigation>

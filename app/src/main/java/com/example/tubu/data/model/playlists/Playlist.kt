@@ -1,8 +1,13 @@
 package com.example.tubu.data.model.playlists
 
-data class Playlist(
+import com.example.tubu.data.model.videos.Video
+import com.google.gson.annotations.SerializedName
+
+data class PlaylistX(
     val id: String = "",
     val title: String = "",
-    val videos: List<Video> = emptyList(),
+    val description: String = "",
+    val thumbnail: String = "",
+    @SerializedName("is_synced")
     val isSynced: Boolean? = null
 )

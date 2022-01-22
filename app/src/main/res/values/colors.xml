@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color>
     <color name="yt_dark_grey_color">#282828</color>
+    <color name="green">#038503</color>
+    <color name="dark_blue">#0202A6</color>
 </resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.lecturer.view.ui.VideoFragment">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/video_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:title="Name"
+            android:background="@color/yt_dark_grey_color"
+            app:titleTextColor="@color/white"
+            app:navigationIcon="@drawable/ic_back_arrow_white"
+            />
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/videoPlayer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/video_toolbar"
+            android:background="@android:color/background_dark"
+            app:use_controller="true"
+            app:hide_on_touch="true"
+            app:show_timeout="5000"
+            app:resize_mode="fit"
+            >
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminateTint="#9E9A96"
+                android:visibility="invisible" />
+        </com.google.android.exoplayer2.ui.PlayerView>
+
+    </RelativeLayout>
+</layout>

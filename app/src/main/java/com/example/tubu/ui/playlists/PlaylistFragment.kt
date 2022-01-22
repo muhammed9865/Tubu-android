@@ -2,6 +2,8 @@ package com.example.tubu.ui.playlists
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -10,74 +12,127 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.tubu.R
 import com.example.tubu.data.model.playlists.Playlist
+import com.example.tubu.data.model.playlists.PlaylistsRequest
+import com.example.tubu.data.repository.DataRepository
 import com.example.tubu.databinding.AddListDialogBinding
 import com.example.tubu.databinding.FragmentPlaylistBinding
 import com.example.tubu.ui.playlists.adapter.PlayListsAdapter
+import com.example.tubu.ui.playlists.interfaces.GetVidoes
 import com.example.tubu.ui.playlists.interfaces.SyncListener
+import com.example.tubu.ui.playlists.viewmodel.PlaylistViewModel
+import com.example.tubu.ui.playlists.viewmodel.PlaylistViewModelFactory
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.progress_dialog.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class PlaylistFragment : Fragment() {
     private lateinit var binding: FragmentPlaylistBinding
     private lateinit var viewModel: PlaylistViewModel
+    private lateinit var viewModelFactory: PlaylistViewModelFactory
     private lateinit var playListsAdapter: PlayListsAdapter
     private val TAG = "PlaylistFragment"
+    private var channelId = ""
+    private var playlists : List<Playlist> = ArrayList()
+    private lateinit var mProgressDialog: Dialog
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_playlist, container, false)
-        viewModel = ViewModelProvider(this)[PlaylistViewModel::class.java]
         playListsAdapter = PlayListsAdapter()
-        supplyDataToList(viewModel.getDummyData())
-        setUpPlaylistRV()
+
+
+        if (!requireArguments().isEmpty) {
+            channelId = PlaylistFragmentArgs.fromBundle(requireArguments()).channelId
+        }
+        setUpViewModel()
+        displayUserDetails()
         setupFab()
 
+        binding.signOutIv.setOnClickListener {
+            signOut()
+        }
 
-        binding.imageView.setOnClickListener {
-            binding.playlistsRv.apply {
-                layoutManager = LinearLayoutManager(requireContext())
-                adapter = adapter
-            }
+        binding.refreshIb.setOnClickListener {
+            setUpViewModel()
         }
 
         return binding.root
     }
 
 
-    private fun setUpPlaylistRV() {
+    private fun setUpViewModel() {
+        showProgressDialog(requireContext())
+        viewModelFactory = PlaylistViewModelFactory(DataRepository.getInstance(requireContext()))
+        viewModel = ViewModelProvider(this, factory = viewModelFactory)[PlaylistViewModel::class.java]
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.getUserPlayLists(PlaylistsRequest(channelId)).also {
+            Log.d(TAG, "setUpViewModel: $it")
+                it.let {
+                    playListsAdapter.submitList(it)
+                    playlists = it
+                }
 
-        supplyDataToList(viewModel.getDummyData())
-        playListsAdapter.setOnChecked(object : SyncListener {
-            @SuppressLint("ShowToast")
-            override fun sync(listId: String) {
-                Log.d(TAG, "sync: $listId")
-
-                Snackbar.make(binding.root, "$listId is syncing..", Snackbar.LENGTH_LONG)
-                    .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
-                    .show()
-                // Send the list id to the view model
             }
-        })
+
+            playListsAdapter.notifyDataSetChanged()
+            setUpPlaylistRV()
+            hideProgressDialog()
+
+        }
+
+    }
+
+    private fun setUpPlaylistRV() {
+        syncList()
         binding.playlistsRv.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = playListsAdapter
+            playListsAdapter.onImageClicked(object : GetVidoes {
+                override fun onImageClicked(playlistId: String) {
+                    findNavController().navigate(
+                        PlaylistFragmentDirections.actionPlaylistFragmentToListFragment(
+                            playlistId
+                        )
+                    )
+                }
+            })
         }
+
     }
 
-    private fun supplyDataToList(playList: List<Playlist>) {
-        Log.d(TAG, "supplyDataToList: $playList")
-        playListsAdapter.submitList(playList)
-    }
 
     private fun setupFab() {
         binding.addListFab.setOnClickListener {
             addListDialog()
         }
+    }
+
+    private fun syncList() {
+        playListsAdapter.setOnChecked(object : SyncListener {
+            @SuppressLint("ShowToast")
+            override fun sync(listId: String, listPosition: Int, state: Boolean) {
+                Log.d(TAG, "sync: $listId")
+                Snackbar.make(binding.root, "${listId.slice(IntRange(0, 5))} is Syncing..", Snackbar.LENGTH_LONG)
+                    .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
+                    .show()
+                playlists[listPosition].is_synced = state
+                viewModel.syncPlaylist(listId, playlists[listPosition]).observe(this@PlaylistFragment) {
+                    Log.d(TAG, "sync: $it")
+                }
+            }
+        })
     }
 
     private fun addListDialog() {
@@ -97,7 +152,7 @@ class PlaylistFragment : Fragment() {
         }.show()
 
         dialogBinding.dAddBtn.setOnClickListener {
-            // send the url to server
+
             val text = dialogBinding.dUrlText.text
             Log.d(TAG, "addListDialog: $text")
             addDialog.dismiss()
@@ -109,6 +164,42 @@ class PlaylistFragment : Fragment() {
 
     }
 
+    private fun displayUserDetails() {
+        val acc = GoogleSignIn.getLastSignedInAccount(requireContext())
+        acc?.let {
+            binding.userDisplayName.text = it.displayName
+            Glide.with(requireContext())
+                .load(acc.photoUrl)
+                .centerCrop()
+                .placeholder(R.drawable.ic_baseline_person_24)
+                .into(binding.userPhoto)
+        }
+    }
+
+    private fun signOut() {
+        findNavController().navigateUp()
+    }
+
+    fun showProgressDialog(context: Context,){
+
+        mProgressDialog = Dialog(context)
+
+        mProgressDialog.setContentView(R.layout.progress_dialog)
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(mProgressDialog.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT
+        mProgressDialog.show()
+        mProgressDialog.window!!.attributes = lp
+        mProgressDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+
+    }
+
+    fun hideProgressDialog(){
+        if (mProgressDialog.isShowing){
+            mProgressDialog.dismiss()
+        }
+    }
 
 
 }

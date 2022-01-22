@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-android-extensions'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -11,12 +12,17 @@ android {
 
     defaultConfig {
         applicationId "com.example.tubu"
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -77,6 +83,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModel_ktx"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
+    //Lifecycle
+
+
+
 
     //Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
@@ -100,5 +110,7 @@ dependencies {
 
     // GSON - Converting from Kotlin objects to json files.
     implementation 'com.google.code.gson:gson:2.8.9'
+
+    implementation("io.github.hadiyarajesh:flower:2.0.0")
 
 }

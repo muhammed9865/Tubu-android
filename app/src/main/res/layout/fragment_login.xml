@@ -3,11 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/yt_dark_grey_color"
-        tools:context=".ui.login.LoginFragment">
+        tools:context=".ui.login.LoginFragment"
+        app:layoutDescription="@xml/fragment_login_scene">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"
@@ -22,30 +23,60 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_10sdp">
+
+                <androidx.constraintlayout.utils.widget.MotionLabel
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Enter your Youtube channel URL"
+                    app:layout_constraintBottom_toTopOf="@+id/textInputLayout2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/login_btn"
                     android:layout_width="@dimen/_150sdp"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginBottom="@dimen/_8sdp"
-                    android:text="Log in"
+                    android:text="Send"
                     app:backgroundTint="@color/red"
                     app:cornerRadius="@dimen/_15sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout2"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintBottom_toTopOf="@+id/login_btn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/channel_url_Et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="URL"
+                        android:text="UCQfJGkFMogeRfLfXOFk4tJg"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
-        <TextView
+        <androidx.constraintlayout.utils.widget.MotionLabel
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TU"
             android:textColor="@color/red"
-            android:textSize="@dimen/_30ssp"
+            android:textSize="@dimen/_35ssp"
             app:layout_constraintBottom_toTopOf="@+id/cardView2"
             app:layout_constraintEnd_toStartOf="@+id/textView2"
             app:layout_constraintHorizontal_bias="0.5"
@@ -53,13 +84,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <androidx.constraintlayout.utils.widget.MotionLabel
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="BU"
             android:textColor="@color/white"
-            android:textSize="@dimen/_22ssp"
+            android:textSize="@dimen/_25ssp"
             app:layout_constraintBottom_toBottomOf="@+id/textView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -67,5 +98,5 @@
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>
