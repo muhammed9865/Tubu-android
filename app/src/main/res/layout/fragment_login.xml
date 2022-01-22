@@ -3,12 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/yt_dark_grey_color"
-        tools:context=".ui.login.LoginFragment"
-        app:layoutDescription="@xml/fragment_login_scene">
+        tools:context=".ui.login.LoginFragment">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"
@@ -19,7 +18,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/imageView2">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -27,10 +26,21 @@
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_10sdp">
 
-                <androidx.constraintlayout.utils.widget.MotionLabel
+                <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Enter your Youtube channel URL"
+                    android:background="?attr/selectableItemBackground"
+                    android:src="@drawable/ic_ecxl_mark"
+                    app:layout_constraintBottom_toBottomOf="@+id/motionLabel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/motionLabel"
+                    app:layout_constraintTop_toTopOf="@+id/motionLabel" />
+
+                <androidx.constraintlayout.utils.widget.MotionLabel
+                    android:id="@+id/motionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enter_your_youtube_channel_id"
                     app:layout_constraintBottom_toTopOf="@+id/textInputLayout2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -64,39 +74,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="URL"
-                        android:text="UCQfJGkFMogeRfLfXOFk4tJg"/>
+                        android:text="UCQfJGkFMogeRfLfXOFk4tJg" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
-        <androidx.constraintlayout.utils.widget.MotionLabel
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TU"
-            android:textColor="@color/red"
-            android:textSize="@dimen/_35ssp"
-            app:layout_constraintBottom_toTopOf="@+id/cardView2"
-            app:layout_constraintEnd_toStartOf="@+id/textView2"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.utils.widget.MotionLabel
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="BU"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_25ssp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView"
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="@dimen/_300sdp"
+            android:layout_height="@dimen/_200sdp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logo" />
 
 
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

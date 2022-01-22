@@ -23,9 +23,9 @@ interface RemoteEndPoint {
     )
     :Call<List<Playlist>>
 
-    @GET("/videos/{list_id}/")
+    @GET("/videos/")
     fun getUserPlaylistVideos(
-        @Path("list_id")
+        @Query("playlist_id")
         listId: String
     ):Call<List<Video>>
 

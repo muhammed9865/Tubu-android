@@ -1,5 +1,6 @@
 package com.example.tubu.ui.playlists.adapter
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import com.example.tubu.databinding.PlaylistItemBinding
 import com.example.tubu.ui.playlists.interfaces.GetVidoes
 import com.example.tubu.ui.playlists.interfaces.SyncListener
 
-class PlayListsAdapter
+class PlayListsAdapter(private val context: Context)
     : ListAdapter<Playlist, PlaylistViewHolder>(PlaylistsDiffCallback()) {
     private var syncListener: SyncListener? = null
     private var getVideos: GetVidoes? = null
@@ -22,7 +23,7 @@ class PlayListsAdapter
 
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
         /*Log.d(TAG, "onBindViewHolder: ${getItem(position)}")*/
-        holder.bind(position, getItem(position), syncListener, getVideos)
+        holder.bind(context,position, getItem(position), syncListener, getVideos)
     }
 
     fun setOnChecked(syncListener: SyncListener) {

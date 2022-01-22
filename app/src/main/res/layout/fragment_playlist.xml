@@ -2,91 +2,23 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/yt_dark_grey_color"
-
+        android:background="#535353"
         tools:context=".ui.playlists.PlaylistFragment">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/userPhoto"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:src="@drawable/ic_baseline_person_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/user_display_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_15ssp"
-            app:layout_constraintEnd_toEndOf="@+id/userPhoto"
-            app:layout_constraintStart_toStartOf="@+id/userPhoto"
-            app:layout_constraintTop_toBottomOf="@+id/userPhoto"
-            tools:text="Display name" />
+        <include layout="@layout/toolbar_layout"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:background="@drawable/playlists_bg"
+            android:layout_height="match_parent"
             android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user_display_name">
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/playlists_bg"
-                android:orientation="horizontal"
-                android:padding="@dimen/_5sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/playlist_info_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:text="Playlists"
-                    android:textColor="@color/yt_dark_grey_color"
-                    android:textSize="@dimen/_15ssp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/imageView"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/_8sdp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textColor="@color/yt_dark_grey_color"
-                    android:textSize="@dimen/_13ssp"
-                    android:text="@string/sync"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/refresh_ib"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/playlist_info_tv"
-                    app:layout_constraintStart_toStartOf="@+id/playlist_info_tv"
-                    app:layout_constraintTop_toTopOf="@+id/playlist_info_tv"
-                    app:srcCompat="@drawable/ic_baseline_refresh_24" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/playlists_rv"
@@ -94,36 +26,39 @@
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/add_list_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_7sdp"
-                android:text="Soon"
                 android:clickable="false"
-                app:elevation="@dimen/_5sdp"
-                android:textColor="@color/white"
-                app:iconTint="@color/white"
                 android:enabled="false"
+                android:text="Soon"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                app:elevation="@dimen/_5sdp"
                 app:icon="@drawable/ic_baseline_add_24"
+                app:iconTint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                />
+                app:layout_constraintStart_toStartOf="parent" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/sign_out_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_exit_to_app_24" />
+            android:layout_margin="@dimen/_10sdp"
+            app:backgroundTint="@color/red"
+            app:icon="@drawable/ic_baseline_exit_to_app_24"
+            app:iconTint="@color/white"
+            android:layout_gravity="start|bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

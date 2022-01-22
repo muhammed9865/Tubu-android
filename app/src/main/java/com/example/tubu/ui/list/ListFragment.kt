@@ -19,12 +19,8 @@ import com.example.tubu.ui.list.adapter.ListAdapter
 import com.example.tubu.ui.list.interfaces.WatchVideo
 import com.example.tubu.ui.list.viewmodel.ListViewModel
 import com.example.tubu.ui.list.viewmodel.ListViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class ListFragment : Fragment() {
@@ -34,6 +30,8 @@ class ListFragment : Fragment() {
     private lateinit var listAdapter: ListAdapter
     private lateinit var listId: String
     private var videos: List<Video>? = ArrayList()
+    private var checkVideosOnServer: Job = Job()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,11 +62,12 @@ class ListFragment : Fragment() {
     }
 
     private fun collectData() {
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.tickerFlow(VideosRequest(listId)).collect { list ->
+       checkVideosOnServer = CoroutineScope(Dispatchers.IO).launch {
+            viewModel.updateList(listId).collect { list ->
                 withContext(Dispatchers.Main) {
                     list.observe(this@ListFragment) {
                         listAdapter.submitList(it)
+                        listAdapter.notifyDataSetChanged()
                         videos = it
                     }
                 }
@@ -76,18 +75,24 @@ class ListFragment : Fragment() {
         }
     }
 
+    override fun onStop() {
+        checkVideosOnServer.cancel()
+        super.onStop()
+    }
+
     private fun setupViewModel() {
         viewModelFactory = ListViewModelFactory(DataRepository.getInstance(requireContext()))
         viewModel = ViewModelProvider(this, viewModelFactory)[ListViewModel::class.java]
         viewModel.getData(VideosRequest(listId)).observe(this) {
-            collectData()
-            /*if (it != null) {
+            if (it != null) {
                 Log.d(TAG, "setupViewModel: $it")
                 videos = it
             }
+            collectData()
             listAdapter.submitList(videos)
             listAdapter.notifyDataSetChanged()
-            setupListRV()*/
+            setupListRV()
+
         }
     }
 

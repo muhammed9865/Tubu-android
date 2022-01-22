@@ -17,7 +17,7 @@ class ListViewHolder(private val context: Context, private val binding: ListItem
         binding.videoTitle.text = item.title
 
         binding.videoStartBtn.setOnClickListener {
-            item.src?.let { it1 -> watchVideo?.onWatchClicked(it1, item.title) }
+            item.src?.let { it -> watchVideo?.onWatchClicked("http://10.0.2.2:8000${it}", item.title) }
         }
     }
 
@@ -28,14 +28,18 @@ class ListViewHolder(private val context: Context, private val binding: ListItem
                 binding.cardLayout.setBackgroundColor(context.getColor(R.color.yt_dark_grey_color))
             }
 
-            "downloaded" -> {
+            "DOWNLOADING" -> {
                 // State downloaded
-                binding.cardLayout.setBackgroundColor(context.getColor(R.color.green))
+                binding.cardLayout.setBackgroundColor(context.getColor(android.R.color.holo_green_light))
             }
 
             "ONLINE" -> {
                 // State ONLINE
                 binding.cardLayout.setBackgroundColor(context.getColor(R.color.dark_blue))
+            }
+
+            "OFFLINE" -> {
+                binding.cardLayout.setBackgroundColor(context.getColor(R.color.green))
             }
 
         }

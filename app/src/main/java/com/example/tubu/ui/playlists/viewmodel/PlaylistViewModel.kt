@@ -17,17 +17,16 @@ import java.time.Duration
 class PlaylistViewModel(private val repository: DataRepository) : ViewModel() {
 
 
-    private var _data = MutableLiveData<List<Playlist>?>()
+
     suspend fun getUserPlayLists(playlistsRequest: PlaylistsRequest): List<Playlist> {
         return repository.getCachedPlaylists()
 
     }
-
-    /*fun getCachedPlaylists() : List<Playlist> {
-        return repository.getCachedPlaylists()
-    }*/
-
+    
     fun syncPlaylist(list_id: String, list: Playlist):LiveData<Playlist?> {
+        viewModelScope.launch {
+            repository.updateEntry(list)
+        }
         return repository.syncPlaylist(list_id, list)
     }
 

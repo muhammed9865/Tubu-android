@@ -11,4 +11,6 @@
     <string name="author">Author:</string>
     <string name="watch">Watch</string>
     <string name="base_url">http://127.0.0.1:8000/</string>
+    <string name="enter_your_youtube_channel_id">Enter your Youtube channel URL</string>
+    <string name="see_all">See all</string>
 </resources>

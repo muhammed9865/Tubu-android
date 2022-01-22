@@ -17,7 +17,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.tubu.R
 import com.example.tubu.data.model.playlists.Playlist
 import com.example.tubu.data.model.playlists.PlaylistsRequest
@@ -29,7 +28,6 @@ import com.example.tubu.ui.playlists.interfaces.GetVidoes
 import com.example.tubu.ui.playlists.interfaces.SyncListener
 import com.example.tubu.ui.playlists.viewmodel.PlaylistViewModel
 import com.example.tubu.ui.playlists.viewmodel.PlaylistViewModelFactory
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.progress_dialog.*
 import kotlinx.coroutines.CoroutineScope
@@ -50,23 +48,19 @@ class PlaylistFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_playlist, container, false)
-        playListsAdapter = PlayListsAdapter()
+        playListsAdapter = PlayListsAdapter(requireContext())
 
 
         if (!requireArguments().isEmpty) {
             channelId = PlaylistFragmentArgs.fromBundle(requireArguments()).channelId
         }
         setUpViewModel()
-        displayUserDetails()
-        setupFab()
 
         binding.signOutIv.setOnClickListener {
             signOut()
         }
 
-        binding.refreshIb.setOnClickListener {
-            setUpViewModel()
-        }
+
 
         return binding.root
     }
@@ -124,12 +118,18 @@ class PlaylistFragment : Fragment() {
             @SuppressLint("ShowToast")
             override fun sync(listId: String, listPosition: Int, state: Boolean) {
                 Log.d(TAG, "sync: $listId")
-                Snackbar.make(binding.root, "${listId.slice(IntRange(0, 5))} is Syncing..", Snackbar.LENGTH_LONG)
-                    .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
-                    .show()
+                if (state) {
+                    Snackbar
+                        .make(
+                            binding.root,
+                            "Syncing ${listId.slice(IntRange(0, 5))}",
+                            Snackbar.LENGTH_LONG
+                        )
+                        .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
+                        .show()
+                }
                 playlists[listPosition].is_synced = state
                 viewModel.syncPlaylist(listId, playlists[listPosition]).observe(this@PlaylistFragment) {
-                    Log.d(TAG, "sync: $it")
                 }
             }
         })
@@ -164,17 +164,7 @@ class PlaylistFragment : Fragment() {
 
     }
 
-    private fun displayUserDetails() {
-        val acc = GoogleSignIn.getLastSignedInAccount(requireContext())
-        acc?.let {
-            binding.userDisplayName.text = it.displayName
-            Glide.with(requireContext())
-                .load(acc.photoUrl)
-                .centerCrop()
-                .placeholder(R.drawable.ic_baseline_person_24)
-                .into(binding.userPhoto)
-        }
-    }
+
 
     private fun signOut() {
         findNavController().navigateUp()

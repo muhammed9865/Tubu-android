@@ -85,11 +85,12 @@ class LoginFragment : Fragment() {
                 .setBackgroundTint(Color.RED)
                 .show()
         } else {
-            viewModel.getPlaylists(PlaylistsRequest(text)).observe(this) {
+            val id = text.substringAfterLast("/")
+            viewModel.getPlaylists(PlaylistsRequest(id)).observe(this) {
                 if (it != null) {
                     Log.d(TAG, "sendUrl: $it")
                     viewModel.cachePlaylists(it)
-                    findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToPlaylistFragment(text))
+                    findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToPlaylistFragment(id))
                 }
             }
 

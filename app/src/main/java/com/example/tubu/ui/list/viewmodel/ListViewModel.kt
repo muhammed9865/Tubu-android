@@ -19,11 +19,11 @@ class ListViewModel(private val repository: DataRepository):ViewModel() {
        return repository.fetchUserVideos(videosRequest)
     }
 
-    suspend fun tickerFlow(videosRequest: VideosRequest) = flow {
+    suspend fun updateList(listId: String) = flow {
         delay(0)
         while (true) {
-            emit(repository.fetchUserVideos(videosRequest))
-            delay(5000)
+            emit(repository.getUserVideos(listId))
+            delay(20000)
         }
     }
 
