@@ -73,8 +73,8 @@
                         android:id="@+id/channel_url_Et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="URL"
-                        android:text="UCQfJGkFMogeRfLfXOFk4tJg" />
+                        android:hint="@string/url"
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
