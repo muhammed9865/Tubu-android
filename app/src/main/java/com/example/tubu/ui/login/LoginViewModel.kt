@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class LoginViewModel(private val repository: DataRepository) : ViewModel() {
 
 
-    fun getPlaylists(params: PlaylistsRequest): LiveData<List<Playlist>?> {
+    suspend fun getPlaylists(params: PlaylistsRequest): LiveData<List<Playlist>?> {
         return repository.fetchUserPlaylists(params)
     }
 

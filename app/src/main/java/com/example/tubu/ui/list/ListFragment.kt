@@ -64,7 +64,7 @@ class ListFragment : Fragment() {
     }
 
     private fun collectData() {
-       checkVideosOnServer = CoroutineScope(Dispatchers.IO).launch {
+        checkVideosOnServer = CoroutineScope(Dispatchers.IO).launch {
             viewModel.updateList(listId).collect { list ->
                 withContext(Dispatchers.Main) {
                     list.observe(this@ListFragment) {
@@ -85,17 +85,21 @@ class ListFragment : Fragment() {
     private fun setupViewModel() {
         viewModelFactory = ListViewModelFactory(DataRepository.getInstance(requireContext()))
         viewModel = ViewModelProvider(this, viewModelFactory)[ListViewModel::class.java]
-        viewModel.getData(VideosRequest(listId)).observe(this) {
-            if (it != null) {
-                Log.d(TAG, "setupViewModel: $it")
-                videos = it
-                collectData()
+        binding.loadingList.visibility = View.VISIBLE
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.getData(VideosRequest(listId)).observe(this@ListFragment) {
+                if (it != null) {
+                    Log.d(TAG, "setupViewModel: $it")
+                    videos = it
+                    binding.loadingList.visibility = View.GONE
+                    collectData()
+                }
+
+                listAdapter.submitList(videos)
+                listAdapter.notifyDataSetChanged()
+                setupListRV()
+
             }
-
-            listAdapter.submitList(videos)
-            listAdapter.notifyDataSetChanged()
-            setupListRV()
-
         }
     }
 
@@ -122,16 +126,6 @@ class ListFragment : Fragment() {
         }
     }
 
-    private fun submitData() {
-        viewModel.getData(VideosRequest(listId)).observe(this) {
-            listAdapter.submitList(it)
-            if (it != null) {
-                binding.playlistName.text = it[0].title
-            }
-        }
-
-        listAdapter.submitList(viewModel.dummyData())
-    }
 
     companion object {
         private const val TAG = "ListFragment"

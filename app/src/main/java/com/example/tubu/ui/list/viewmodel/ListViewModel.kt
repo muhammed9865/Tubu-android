@@ -15,7 +15,7 @@ class ListViewModel(private val repository: DataRepository):ViewModel() {
 
 
 
-    fun getData(videosRequest: VideosRequest):LiveData<List<Video>?> {
+   suspend  fun getData(videosRequest: VideosRequest):LiveData<List<Video>?> {
        return repository.fetchUserVideos(videosRequest)
     }
 

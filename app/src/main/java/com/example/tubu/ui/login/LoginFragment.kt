@@ -85,21 +85,29 @@ class LoginFragment : Fragment() {
                 .setBackgroundTint(Color.RED)
                 .show()
         } else {
+            binding.loginBtn.visibility = View.INVISIBLE
             binding.fetchingPb.visibility = View.VISIBLE
             val id = text.substringAfterLast("/")
-            viewModel.getPlaylists(PlaylistsRequest(id)).observe(this) {
-                if (it != null) {
-                    Log.d(TAG, "sendUrl: $it")
-                    viewModel.cachePlaylists(it)
-                    binding.fetchingPb.visibility = View.GONE
-                    findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToPlaylistFragment(id))
+            CoroutineScope(Dispatchers.Main).launch {
+                viewModel.getPlaylists(PlaylistsRequest(id)).observe(this@LoginFragment) {
+                    if (it != null) {
+                        Log.d(TAG, "sendUrl: $it")
+                        viewModel.cachePlaylists(it)
+                        binding.fetchingPb.visibility = View.GONE
+                        binding.loginBtn.visibility = View.VISIBLE
+                        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToPlaylistFragment(id))
+                    }
                 }
+
             }
+
 
 
         }
 
     }
+
+
 
     private fun handleSignInResult(task: Task<GoogleSignInAccount>) {
         CoroutineScope(Dispatchers.IO).launch {
