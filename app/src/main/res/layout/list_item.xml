@@ -4,67 +4,66 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:cardBackgroundColor="@color/yt_dark_grey_color"
         app:cardElevation="@dimen/_10sdp"
         app:cardCornerRadius="@dimen/_8sdp">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/card_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="@dimen/_5sdp"
-            android:paddingTop="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_10sdp">
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_200sdp">
 
             <ImageView
                 android:id="@+id/video_image"
-                android:layout_width="@dimen/_120sdp"
-                android:layout_height="@dimen/_50sdp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.3"
                 android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/video_title"
                 app:srcCompat="@drawable/test_bg" />
 
             <TextView
                 android:id="@+id/video_title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/architects_daughter"
-                android:text="Ana Msh men Hoon"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_16ssp"
+                android:textSize="@dimen/_18ssp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/video_start_btn"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/video_image"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/video_is_downloading_pb"
+                tools:text="Testinga video name" />
 
             <TextView
                 android:id="@+id/video_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12ssp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/textView6"
                 app:layout_constraintStart_toEndOf="@+id/textView6"
+                app:layout_constraintTop_toTopOf="@+id/textView6"
                 tools:text="Bigsam" />
 
             <TextView
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/author"
-                android:textColor="#aaa"
-                app:layout_constraintBottom_toBottomOf="@+id/video_author"
-                app:layout_constraintEnd_toStartOf="@+id/video_author"
-                app:layout_constraintHorizontal_bias="0.5"
+                android:text="@string/channel"
+                android:textColor="#aaaeae"
                 app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/video_author" />
+                app:layout_constraintStart_toStartOf="@+id/video_title"
+                app:layout_constraintTop_toBottomOf="@+id/video_title" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/video_start_btn"
@@ -76,21 +75,35 @@
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:strokeColor="@color/white" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
+            <ProgressBar
+                android:id="@+id/video_is_downloading_pb"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_10ssp"
-                app:icon="@drawable/ic_arrow_down"
-                app:iconTint="@color/white"
-                android:text="Keep Reading"
-                app:layout_constraintBottom_toBottomOf="@+id/video_start_btn"
-                app:layout_constraintEnd_toStartOf="@+id/video_start_btn"
+                android:indeterminate="true"
+                android:indeterminateTint="#04F404"
+                app:layout_constraintEnd_toEndOf="@+id/video_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.mikhaellopez.circleview.CircleView
+                android:id="@+id/video_status_indicator"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                app:cv_border="true"
+                app:cv_shadow="true"
+                app:cv_color="@color/green"
+                app:cv_shadow_radius="1"
+                app:cv_border_width="0.2dp"
+                app:cv_shadow_color="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/video_start_btn"
                 app:layout_constraintTop_toTopOf="@+id/video_start_btn" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

@@ -8,7 +8,7 @@
     <string name="back">Back</string>
     <string name="api_key">471936142527-n5cljir9765idio8hvrso3f0udbff40e.apps.googleusercontent.com</string>
     <string name="title_activity_maps">Map</string>
-    <string name="author">Author:</string>
+    <string name="channel">Channel:</string>
     <string name="watch">Watch</string>
     <string name="base_url">http://127.0.0.1:8000/</string>
     <string name="enter_your_youtube_channel_id">Enter your Youtube channel URL</string>
