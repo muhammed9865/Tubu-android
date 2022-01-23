@@ -89,8 +89,9 @@ class ListFragment : Fragment() {
             if (it != null) {
                 Log.d(TAG, "setupViewModel: $it")
                 videos = it
+                collectData()
             }
-            collectData()
+
             listAdapter.submitList(videos)
             listAdapter.notifyDataSetChanged()
             setupListRV()
@@ -99,6 +100,7 @@ class ListFragment : Fragment() {
     }
 
     private fun setupListRV() {
+
         listAdapter.setWatchVideo(object : WatchVideo {
             override fun onWatchClicked(videoUrl: String, videoName: String) {
                 Log.d(TAG, "onWatchClicked: $videoUrl")

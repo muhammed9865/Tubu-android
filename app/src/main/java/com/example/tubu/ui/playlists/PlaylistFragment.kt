@@ -41,7 +41,7 @@ class PlaylistFragment : Fragment() {
     private lateinit var playListsAdapter: PlayListsAdapter
     private val TAG = "PlaylistFragment"
     private var channelId = ""
-    private var playlists : List<Playlist> = ArrayList()
+    private var playlists: List<Playlist> = ArrayList()
     private lateinit var mProgressDialog: Dialog
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,10 +69,11 @@ class PlaylistFragment : Fragment() {
     private fun setUpViewModel() {
         showProgressDialog(requireContext())
         viewModelFactory = PlaylistViewModelFactory(DataRepository.getInstance(requireContext()))
-        viewModel = ViewModelProvider(this, factory = viewModelFactory)[PlaylistViewModel::class.java]
+        viewModel =
+            ViewModelProvider(this, factory = viewModelFactory)[PlaylistViewModel::class.java]
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.getUserPlayLists(PlaylistsRequest(channelId)).also {
-            Log.d(TAG, "setUpViewModel: $it")
+                Log.d(TAG, "setUpViewModel: $it")
                 it.let {
                     playListsAdapter.submitList(it)
                     playlists = it
@@ -89,7 +90,6 @@ class PlaylistFragment : Fragment() {
     }
 
     private fun setUpPlaylistRV() {
-        syncList()
         binding.playlistsRv.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = playListsAdapter
@@ -102,8 +102,9 @@ class PlaylistFragment : Fragment() {
                     )
                 }
             })
-        }
+            syncList()
 
+        }
     }
 
 
@@ -113,6 +114,7 @@ class PlaylistFragment : Fragment() {
         }
     }
 
+    @SuppressLint("ShowToast")
     private fun syncList() {
         playListsAdapter.setOnChecked(object : SyncListener {
             @SuppressLint("ShowToast")
@@ -130,6 +132,7 @@ class PlaylistFragment : Fragment() {
                 }
                 playlists[listPosition].is_synced = state
                 viewModel.syncPlaylist(listId, playlists[listPosition]).observe(this@PlaylistFragment) {
+
                 }
             }
         })
@@ -165,12 +168,11 @@ class PlaylistFragment : Fragment() {
     }
 
 
-
     private fun signOut() {
         findNavController().navigateUp()
     }
 
-    fun showProgressDialog(context: Context,){
+    fun showProgressDialog(context: Context) {
 
         mProgressDialog = Dialog(context)
 
@@ -185,8 +187,8 @@ class PlaylistFragment : Fragment() {
 
     }
 
-    fun hideProgressDialog(){
-        if (mProgressDialog.isShowing){
+    fun hideProgressDialog() {
+        if (mProgressDialog.isShowing) {
             mProgressDialog.dismiss()
         }
     }

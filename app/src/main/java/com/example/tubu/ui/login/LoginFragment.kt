@@ -85,11 +85,13 @@ class LoginFragment : Fragment() {
                 .setBackgroundTint(Color.RED)
                 .show()
         } else {
+            binding.fetchingPb.visibility = View.VISIBLE
             val id = text.substringAfterLast("/")
             viewModel.getPlaylists(PlaylistsRequest(id)).observe(this) {
                 if (it != null) {
                     Log.d(TAG, "sendUrl: $it")
                     viewModel.cachePlaylists(it)
+                    binding.fetchingPb.visibility = View.GONE
                     findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToPlaylistFragment(id))
                 }
             }

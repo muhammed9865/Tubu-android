@@ -22,12 +22,19 @@ class PlaylistViewModel(private val repository: DataRepository) : ViewModel() {
         return repository.getCachedPlaylists()
 
     }
-    
+
+
+
     fun syncPlaylist(list_id: String, list: Playlist):LiveData<Playlist?> {
         viewModelScope.launch {
             repository.updateEntry(list)
         }
         return repository.syncPlaylist(list_id, list)
+    }
+
+
+    fun updateEntry(list: Playlist) {
+
     }
 
 

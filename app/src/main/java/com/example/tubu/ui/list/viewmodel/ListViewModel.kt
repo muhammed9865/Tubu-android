@@ -23,7 +23,7 @@ class ListViewModel(private val repository: DataRepository):ViewModel() {
         delay(0)
         while (true) {
             emit(repository.getUserVideos(listId))
-            delay(20000)
+            delay(5000)
         }
     }
 

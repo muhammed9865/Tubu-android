@@ -42,12 +42,14 @@ class PlaylistViewHolder
 
                 listSyncBtn.setOnClickListener {
                     synced = !is_synced
-                    if (is_synced) {
+                    if (synced) {
                         isListSyncedTv.setTextColor(context.getColor(R.color.green))
+                        isListSyncedTv.text = "Synced"
                         listSyncBtn.icon =
-                            context.getDrawable(R.drawable.ic_baseline_sync_disabled_24)
+                            context.getDrawable(R.drawable.ic_baseline_sync_24)
                     } else {
                         isListSyncedTv.setTextColor(context.getColor(R.color.dark_red))
+                        isListSyncedTv.text = "Sync up"
                         listSyncBtn.icon =
                             context.getDrawable(R.drawable.ic_baseline_sync_disabled_24)
                     }
