@@ -44,26 +44,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/video_is_downloading_pb"
                 tools:text="Testinga video name" />
 
-            <TextView
-                android:id="@+id/video_author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12ssp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView6"
-                app:layout_constraintStart_toEndOf="@+id/textView6"
-                app:layout_constraintTop_toTopOf="@+id/textView6"
-                tools:text="Bigsam" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/channel"
-                android:textColor="#aaaeae"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="@+id/video_title"
-                app:layout_constraintTop_toBottomOf="@+id/video_title" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/video_start_btn"

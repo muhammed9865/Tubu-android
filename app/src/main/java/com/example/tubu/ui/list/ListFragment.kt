@@ -102,11 +102,16 @@ class ListFragment : Fragment() {
     private fun setupListRV() {
 
         listAdapter.setWatchVideo(object : WatchVideo {
-            override fun onWatchClicked(videoUrl: String, videoName: String) {
+            override fun onWatchClicked(
+                videoUrl: String,
+                videoName: String,
+                videoDesc: String,
+                channelName: String
+            ) {
                 Log.d(TAG, "onWatchClicked: $videoUrl")
                 findNavController().navigate(
                     ListFragmentDirections.actionListFragmentToVideoPlayerFragment
-                        (videoUrl, videoName)
+                        (videoUrl, videoName, videoDesc, channelName)
                 )
             }
         })

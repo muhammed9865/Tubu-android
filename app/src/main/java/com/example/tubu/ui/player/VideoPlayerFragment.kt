@@ -3,11 +3,11 @@ package com.example.tubu.ui.player
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.tubu.R
@@ -33,6 +33,7 @@ class VideoPlayerFragment : Fragment(), Player.Listener {
     private lateinit var videoUrl: String
     private lateinit var videoName: String
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,16 +41,20 @@ class VideoPlayerFragment : Fragment(), Player.Listener {
         navController = this.findNavController()
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_video_player, container, false)
 
-        binding.videoToolbar.setNavigationOnClickListener {
-            navController.navigateUp()
-        }
 
         if (!requireArguments().isEmpty) {
             val args = VideoPlayerFragmentArgs.fromBundle(requireArguments())
             videoUrl = args.videoUrl
             videoName = args.videoName
-            binding.videoToolbar.title = args.videoName
+            binding.videoTitle.text = args.videoName
+            binding.channelName.text = args.channelName
+            binding.videoDescription.text = args.videoDesc
         }
+
+        binding.expandToolbar.setOnClickListener {
+            expandVideo()
+        }
+
 
         // Inflate the layout for this fragment
         return binding.root
@@ -131,6 +136,12 @@ class VideoPlayerFragment : Fragment(), Player.Listener {
         }
         return 0
 
+    }
+
+    private fun expandVideo() {
+        val params = binding.mainToolbar.layoutParams
+
+        binding.appBarLayout.setExpanded(true)
     }
 
     companion object {

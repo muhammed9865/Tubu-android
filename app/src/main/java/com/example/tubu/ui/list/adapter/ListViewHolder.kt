@@ -25,12 +25,14 @@ class ListViewHolder(private val context: Context, private val binding: ListItem
             }
 
             setVideoImage(thumbnail)
-            videoAuthor.text = channel_name
+
             videoStartBtn.setOnClickListener {
                 src?.let { url ->
                     watchVideo?.onWatchClicked(
                         "http://10.0.2.2:8000${url}",
-                        title
+                        title,
+                        description,
+                        channel_name
                     )
                 }
             }
